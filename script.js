@@ -1,5 +1,5 @@
 async function fetchData(){
-    const url = 'https://quran-com.p.rapidapi.com/verses/random?language=en&words=true';
+    const url = 'https://api.quran.com/api/v4/verses/random?language=en&words=true&translations=ar';
     const options = {
         method: 'GET',
         headers: {
@@ -13,14 +13,30 @@ async function fetchData(){
         const result = await response.json(); // Parse the JSON response
         console.log(result);
 
-        // Check if 'verse' property exists before accessing 'id'
-        if (result.verse) {
-        const english = document.getElementById("english");
-        english.textContent = result.verse.id;
-        console.log("Verse ID: " + result.verse.id);
-        } else {
-        console.error("'verse' property not found in the JSON data");
-        }
+
+        // Assuming you have an element with the id "arabic" for Arabic text
+        const arabicElement = document.getElementById("arabic");
+
+        // Assuming you have an element with the id "english" for English text
+        const englishElement = document.getElementById("english");
+
+        // Initialize variables to store Arabic and English text
+        let arabicText = "";
+        let englishText = "";
+
+        // Loop through the words array and concatenate Arabic and English text
+        result.verse.words.forEach(word => {
+            const parser = new DOMParser();
+            const decodedText = parser.parseFromString(word.transliteration.text, "text/html").body.textContent;
+            //arabicElement.innerHTML += word.transliteration.text + " ";
+            arabicText += decodedText + " ";
+            englishText += word.translation.text + " ";
+        });
+
+        // Set the content of the HTML elements
+        arabicElement.textContent = arabicText.trim(); // trim to remove extra spaces
+        englishElement.textContent = englishText.trim();
+
     } catch (error) {
         console.error(error);
     }
