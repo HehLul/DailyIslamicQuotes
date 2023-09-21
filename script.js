@@ -78,4 +78,3 @@ function setText(englishText, arabicText){
 }
 
 fetchData();
-
