@@ -12,15 +12,9 @@ async function fetchData(){
         const result = await response.json(); // Parse the JSON response
         console.log(result);
         const verseKey = result.verse.verse_key;
-       // console.log(verseKey);
-
         const englishElement = document.getElementById("english");
         let englishText = "";
         englishText += result.verse.translations[0].text;
-        // result.verse.words.forEach(word => {
-        //     englishText += word.translation.text + " ";
-        // });
-        englishElement.textContent = englishText.trim();
 
         getArabic(verseKey, englishText);
 
@@ -30,13 +24,13 @@ async function fetchData(){
 }
 
 
-async function getArabic(verseKey, englishText){
+async function getArabic(verseKey, englishText){//get arabic translation of verse
+    //use api to get indopak arabic using the chap and verse number
     const [chapterNumber, verseNumber] = verseKey.split(":");
     const encodedChapterNumber = encodeURIComponent(chapterNumber);
     const encodedVerseNumber = encodeURIComponent(verseNumber);
     console.log(encodedChapterNumber)
     const url = `https://quran-com.p.rapidapi.com/quran/verses/indopak?verse_key=${encodedChapterNumber}%3A${encodedVerseNumber}`;
-
     const options = {
         method: 'GET',
         headers: {
@@ -45,33 +39,37 @@ async function getArabic(verseKey, englishText){
         }
     };
 
+
+    let arabicText = "";
+    let error;//later on used to compare wheather there is eroor or not
     try {
         const response = await fetch(url, options);
         const result = await response.json();
         console.log(result);
-
-        let arabicText = "";
         if (result) {
-            arabicText += result.verses[0].text_indopak;
-            //console.log("Arabic Text (Uthmani Simple):", arabicText);
+            arabicText += result.verses[0].text_indopak;//
           } else {
             console.error("Invalid or empty response data or schema mismatch.");
         }
 
-         const arabicElement = document.getElementById("arabic");
-         arabicElement.textContent = arabicText.trim(); 
-
-
-
-    } catch (error) {
+    } catch (e) {
+        error = e;
         fetchData();
         console.error(error);
+    }finally{//if no error caught, set the text
+        if(!error){
+            setText(englishText, arabicText);
+        }
     }
 
-    setText(englishText, arabicText);
+    console.log(englishText);
 }
 
-function setText(englishText, arabicText){
+function setText(englishText, arabicText){//show text
+    let arabText = '';
+    let engText = '';
+    arabText += arabicText;
+    engText += englishText;
     const englishElement = document.getElementById("english");
     const arabicElement = document.getElementById("arabic");
     englishElement.textContent = englishText.trim();
