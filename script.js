@@ -1,3 +1,15 @@
+function searchBarInit(){
+    // newtab.js
+document.getElementById('search-button').addEventListener('click', function() {
+    const searchInput = document.getElementById('search-input').value;
+    if (searchInput) {
+      // Open Google search results in a new tab
+      chrome.tabs.create({ url: `https://www.google.com/search?q=${encodeURIComponent(searchInput)}` });
+    }
+  });
+}
+
+
 async function fetchData(){
     const url = 'https://api.quran.com/api/v4/verses/random?language=en&translations=131';
     const options = {
@@ -76,4 +88,5 @@ function setText(englishText, arabicText){//show text
     arabicElement.textContent = arabicText.trim(); 
 }
 
+searchBarInit();
 fetchData();
