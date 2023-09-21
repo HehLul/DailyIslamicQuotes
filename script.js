@@ -1,5 +1,5 @@
 async function fetchData(){
-    const url = 'https://api.quran.com/api/v4/verses/random?language=en&words=true&translations=ar';
+    const url = 'https://api.quran.com/api/v4/verses/random?language=en&translations=131';
     const options = {
         method: 'GET',
         headers: {
@@ -12,13 +12,14 @@ async function fetchData(){
         const result = await response.json(); // Parse the JSON response
         console.log(result);
         const verseKey = result.verse.verse_key;
-        console.log(verseKey);
+       // console.log(verseKey);
 
         const englishElement = document.getElementById("english");
         let englishText = "";
-        result.verse.words.forEach(word => {
-            englishText += word.translation.text + " ";
-        });
+        englishText += result.verse.translations[0].text;
+        // result.verse.words.forEach(word => {
+        //     englishText += word.translation.text + " ";
+        // });
         englishElement.textContent = englishText.trim();
 
         getArabic(verseKey, englishText);
