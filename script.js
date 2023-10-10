@@ -80,13 +80,16 @@ async function getArabic(verseKey, englishText){//get arabic translation of vers
 function setText(englishText, arabicText){//show text
     let arabText = '';
     let engText = '';
+    
     arabText += arabicText;
     engText += englishText;
     const englishElement = document.getElementById("english");
     const arabicElement = document.getElementById("arabic");
+    const loadingElement = document.getElementById("loading-msg");
+    loadingElement.textContent = "";
     englishElement.textContent = englishText.trim();
     arabicElement.textContent = arabicText.trim(); 
 }
 
-searchBarInit();
+//searchBarInit();
 fetchData();
