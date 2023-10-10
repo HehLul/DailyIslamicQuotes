@@ -10,6 +10,12 @@ document.getElementById('search-button').addEventListener('click', function() {
 }
 
 
+function getRandomVerse(){
+    fetch('./verses.json')
+    .then((response) => response.json())
+    .then((json) => console.log(json));
+}
+
 async function fetchData(){
     const url = 'https://api.quran.com/api/v4/verses/random?language=en&translations=131';
     const options = {
@@ -92,4 +98,5 @@ function setText(englishText, arabicText){//show text
 }
 
 //searchBarInit();
+getRandomVerse();
 fetchData();

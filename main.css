@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
+/*BOILERPLATE  */
 * {
     margin:0;
     padding:0;
@@ -17,22 +18,24 @@
 }
 html {
     font-size: 145%;
-  
+
 }
 
-
-
+/* ON PAGE */
 #loading-msg{
     text-align: center;
+    color: var(--text-color);
 }
 
-p{
+p{ 
+    color: var(--text-color);
     text-align: center;
+    font-weight: bold;
     margin-top: 20px;
     padding-right: 60px;
     padding-left: 60px;
 }
 
  #arabic{
-    padding-top: 200px
+    padding-top: 200px;
 }
