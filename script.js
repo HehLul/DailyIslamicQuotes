@@ -9,21 +9,43 @@ document.getElementById('search-button').addEventListener('click', function() {
   });
 }
 
+function getRandomVerseNumber(verses, lastVerseIndex){
+    const x = Math.floor((Math.random() * verses.verses.length) + 1);
+    if(x == lastVerseIndex){
+        getRandomVerseNumber(verses, lastVerseIndex)
+    }
+    return x
+}
 
-async function getRandomVerse(){
-
-    const response = await fetch('/verses.json');
-    const verses = await response.json();
-    
-    console.log(verses); 
-
+async function getRandomVerse(){ 
+    //fetch json file
+    let verses;
+    try {
+        const response = await fetch('/verses.json');
+        verses = await response.json();
+        
+        if (verses && verses.verses) {
+          console.log("verses length is: " + verses.verses.length);
+          console.log(verses.verses);
+        } else {
+          console.log("Error: JSON data is not structured as expected.");
+        }
+      } catch (error) {
+        console.error("Error fetching JSON data:", error);
+      }
     //pick random verse
+    let lastVerseIndex
+    lastVerseIndex = getRandomVerseNumber(verses, lastVerseIndex);
+    let currVerseNumber = verses.verses[lastVerseIndex];
     //call fatchdata and send in verse numbers as parameter
+
+    fetchData(currVerseNumber);
 
 
 }
 
-async function fetchData(){
+async function fetchData(currVerseNumber){
+    console.log("currVerseNumber in fetch data:" + currVerseNumber)
     const url = 'https://api.quran.com/api/v4/verses/random?language=en&translations=131';
     const options = {
         method: 'GET',
@@ -106,4 +128,4 @@ function setText(englishText, arabicText){//show text
 
 //searchBarInit();
 getRandomVerse();
-fetchData();
+//fetchData();
