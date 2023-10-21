@@ -10,10 +10,17 @@ document.getElementById('search-button').addEventListener('click', function() {
 }
 
 
-function getRandomVerse(){
-    fetch('./verses.json')
-    .then((response) => response.json())
-    .then((json) => console.log(json));
+async function getRandomVerse(){
+
+    const response = await fetch('/verses.json');
+    const verses = await response.json();
+    
+    console.log(verses); 
+
+    //pick random verse
+    //call fatchdata and send in verse numbers as parameter
+
+
 }
 
 async function fetchData(){
