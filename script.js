@@ -1,14 +1,3 @@
-function searchBarInit(){
-    // newtab.js
-document.getElementById('search-button').addEventListener('click', function() {
-    const searchInput = document.getElementById('search-input').value;
-    if (searchInput) {
-      // Open Google search results in a new tab
-      chrome.tabs.create({ url: `https://www.google.com/search?q=${encodeURIComponent(searchInput)}` });
-    }
-  });
-}
-
 function getRandomVerseNumber(verses, lastVerseIndex){
     const x = Math.floor((Math.random() * verses.verses.length) + 1);
     if(x == lastVerseIndex){
@@ -17,7 +6,7 @@ function getRandomVerseNumber(verses, lastVerseIndex){
     return x
 }
 
-async function getRandomVerse(){ 
+async function getRandomVerse(){ //get random verse from json
     //fetch json file
     let verses;
     try {
@@ -44,9 +33,9 @@ async function getRandomVerse(){
 
 }
 
-async function fetchData(currVerseNumber){
+async function fetchData(currVerseNumber){//fetch english
     console.log("currVerseNumber in fetch data:" + currVerseNumber)
-
+    if(currVerseNumber === undefined){getRandomVerse();}
     // Split the currVerseNumber into chapter and verse parts
     const [chapterNumber, verseNumber] = currVerseNumber.split(":");
     const encodedChapterNumber = encodeURIComponent(chapterNumber);
@@ -135,8 +124,8 @@ function setText(englishText, arabicText){//show text
     let arabText = '';
     let engText = '';
     
-    arabText += arabicText;
-    engText += englishText;
+    arabText +=  removeSpecialCharacters(arabicText);
+    engText += removeHtmlTags(englishText) ;
     const englishElement = document.getElementById("english");
     const arabicElement = document.getElementById("arabic");
     const loadingElement = document.getElementById("loading-msg");
@@ -145,6 +134,11 @@ function setText(englishText, arabicText){//show text
     arabicElement.textContent = arabicText.trim(); 
 }
 
-//searchBarInit();
+function removeHtmlTags(inputText) {
+    return inputText.replace(/<[^>]+>/g, ''); // Removes all HTML tags
+  }
+function removeSpecialCharacters(inputText) {
+    return inputText.replace(//g, ''); // Replace the specific character with an empty string
+  }
+
 getRandomVerse();
-//fetchData();
