@@ -46,7 +46,12 @@ async function getRandomVerse(){
 
 async function fetchData(currVerseNumber){
     console.log("currVerseNumber in fetch data:" + currVerseNumber)
-    const url = 'https://api.quran.com/api/v4/verses/random?language=en&translations=131';
+
+    // Split the currVerseNumber into chapter and verse parts
+    const [chapterNumber, verseNumber] = currVerseNumber.split(":");
+    const encodedChapterNumber = encodeURIComponent(chapterNumber);
+    const encodedVerseNumber = encodeURIComponent(verseNumber);
+    const url =  `https://quran-com.p.rapidapi.com/quran/translations/131?verse_key=${encodedChapterNumber}%3A${encodedVerseNumber}`;
     const options = {
         method: 'GET',
         headers: {
@@ -54,20 +59,34 @@ async function fetchData(currVerseNumber){
             'X-RapidAPI-Host': 'quran-com.p.rapidapi.com'
         }
     };
+
+    
+    let error;//later on used to compare wheather there is eroor or not
+    let engText;
     try {
         const response = await fetch(url, options);
-        const result = await response.json(); // Parse the JSON response
+        const result = await response.json();//await response
+
+        console.log("result from fetch data: ");
         console.log(result);
-        const verseKey = result.verse.verse_key;
-        const englishElement = document.getElementById("english");
-        let englishText = "";
-        englishText += result.verse.translations[0].text;
 
-        getArabic(verseKey, englishText);
+        engText = result.translations[0].text;//verse in english
+        console.log("translation in fethcdata: "+engText);
 
-    } catch (error) {
-        console.error(error);
+
+    } catch (e) {//error handling
+        error = e;
+        fetchData(currVerseNumber);
+        console.error("Got error :( " + error);
     }
+    finally{//if no error caught, set the text
+        if(!error){
+        console.log("No error!");
+        }
+    }
+
+    getArabic(currVerseNumber, engText);//featch arabic text for same verse
+
 }
 
 
@@ -101,7 +120,7 @@ async function getArabic(verseKey, englishText){//get arabic translation of vers
 
     } catch (e) {
         error = e;
-        fetchData();
+        getArabic(verseKey, englishText);
         console.error(error);
     }finally{//if no error caught, set the text
         if(!error){
