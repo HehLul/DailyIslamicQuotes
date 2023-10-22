@@ -10,5 +10,9 @@
       },
     "background": {
         "service_worker": "script.js"
+      },
+      "icons": {
+        "16": "chromeExtensionIcon_48x48.png",
+        "48": "chromeExtensionIcon_48x48.png"
       }
 }
