@@ -4,7 +4,6 @@
     "description": "This extension provides meaningful Quranic quotes and cool background pictures to your web browser!",
     "manifest_version": 3,
     "author": "Ahmed Salman",
-    "permissions": ["activeTab", "https://www.google.com/"],
     "chrome_url_overrides": {
         "newtab": "index.html"
       },
